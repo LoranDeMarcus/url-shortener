@@ -2,19 +2,13 @@ package response
 
 import (
 	"fmt"
-	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
-	"net/http"
 	"strings"
 )
 
 type Response struct {
 	Status string `json:"status"` // Error, ok
 	Error  string `json:"error,omitempty"`
-}
-type ResponseWithAlias struct {
-	Response
-	Alias string `json:"alias,omitempty"`
 }
 
 const (
@@ -33,13 +27,6 @@ func Error(msg string) Response {
 		Status: StatusError,
 		Error:  msg,
 	}
-}
-
-func ResponseOK(w http.ResponseWriter, r *http.Request, alias string) {
-	render.JSON(w, r, ResponseWithAlias{
-		Response: ResponseWithAlias.OK(),
-		Alias:    alias,
-	})
 }
 
 func ValidationError(errs validator.ValidationErrors) Response {
