@@ -45,7 +45,7 @@ jobs:
 
       - name: Deploy to VM
         run: |
-          echo "$DEPLOY_SSH_KEY" > deploy_key.pem
+          echo "$DEPLOY_SSH_KEY" > deploy_key.pem ${{ secrets.DEPLOY_SSH_PASSPHRASE }}
           chmod 600 deploy_key.pem
           sshpass -p "${{ secrets.DEPLOY_SSH_PASSPHRASE }}" ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
           sshpass -p "${{ secrets.DEPLOY_SSH_PASSPHRASE }}" rsync -avz -e 'ssh -i deploy_key.pem -o StrictHostKeyChecking=no' --exclude='.git' ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }}
